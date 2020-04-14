@@ -7,6 +7,17 @@
     v-model="searchtext"/> 
   
     </div>
+    <div class="dashboard card">
+      <h1>Dashboard</h1>
+     <div>
+        <ul >
+          <li class="dashboard-tags"  v-for="(t,ti) in existedTags" :key="ti">
+            <span class="tag dashboard-tag-content">{{t.content}}</span>
+            <span class="tag dashboard-tag-category">{{t.category}}</span>
+          </li>
+        </ul>
+      </div> 
+    </div>
     <ul>
       <li v-for='(dat, index) in viewList' :key="index">
 
@@ -61,7 +72,7 @@ export default {
   name: 'RefPage',
   data() {
     return {
-      localServer:"http://127.0.0.1:8083",
+      localServer:"http://127.0.0.1:8081",
       searchtext:"",
       data:null,
       result:null
@@ -82,6 +93,21 @@ export default {
         }
         return this.data;
       
+    },
+    existedTags() {
+      var tagcontents = new Set();
+      var res = [];
+      for (var key in this.data) {
+        var obj = this.data[key];
+        var tags = obj.tags;
+        for (var i in tags) {
+          if (!tagcontents.has(tags[i].content)) {
+            tagcontents.add(tags[i].content);
+            res.push(tags[i]);
+          }
+        }
+      }
+      return res;
     }
   },
   methods:{
@@ -219,5 +245,20 @@ li div {
 .tag {
     color: cadetblue;
     font-size: small;
+}
+.dashboard-tags {
+  display: inline-block;
+  padding-right: 30px;
+}
+.dashboard{
+
+}
+.dashboard-tag-content{
+  padding-right: 3px
+}
+
+.dashboard-tag-category{
+  color:#ca31b2;
+  font-style: italic;
 }
 </style>
